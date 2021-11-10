@@ -16,7 +16,7 @@ async def on_message(message):
         return
 
     if message.content.startswith('$weeb'):
-        await message.channel.send('Ohayo Gozaimasu {0} san!'.format(message.author.name))
+        await message.channel.send("Kon'nichiwa {0} san!".format(message.author.name))
 
 
 client.run(os.getenv('TOKEN'))
