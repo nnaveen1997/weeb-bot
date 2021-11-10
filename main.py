@@ -15,7 +15,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('$weeb'):
+    if message.content.startswith('$hi'):
         await message.channel.send("Kon'nichiwa {0} san!".format(message.author.name))
 
 
