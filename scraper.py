@@ -26,11 +26,12 @@ def getKey():
     # print(chapter)
     return chapter
 
-if __name__ == '__main__':
+def checkNewEpisode():
     episode_number = scrapeEpisode()
     prev_episode = getKey()
     if int(episode_number) > int(prev_episode):
-        print(f'New episode is out : {episode_number}')
+        return f'New episode is out : {episode_number}'
     else:
-        print('Waiting for new episode to release')
-        print(f'Current chapter : {prev_episode}')
+        return f'Waiting for new episode to release\nCurrent Episode : {prev_episode}'
+        
+# print(checkNewEpisode())
