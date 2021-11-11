@@ -30,6 +30,7 @@ def checkNewEpisode():
     episode_number = scrapeEpisode()
     prev_episode = getKey()
     if int(episode_number) > int(prev_episode):
+        setKey(episode_number)
         return f'New episode is out : {episode_number}'
     else:
         return f'Waiting for new episode to release\nCurrent Episode : {prev_episode}'
