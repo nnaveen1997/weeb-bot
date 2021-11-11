@@ -11,7 +11,7 @@ html_text = requests.get('https://myanimelist.net/anime/49926/Kimetsu_no_Yaiba__
 soup = BeautifulSoup(html_text, 'lxml')
 # print(soup.prettify())
 
-def checkNewEpisode():
+def scrapeEpisode():
     episode = soup.find('li', class_ = 'btn-anime')
     # print(episode)
     episode_number = episode.a['href'].split('/')[-1]
@@ -23,9 +23,14 @@ def setKey(episode_number):
 
 def getKey():
     chapter = r.get('chapter')
-    print(chapter)
+    # print(chapter)
+    return chapter
 
 if __name__ == '__main__':
-    episode_number = checkNewEpisode()
-    setKey(episode_number)
-    getKey()
+    episode_number = scrapeEpisode()
+    prev_episode = getKey()
+    if int(episode_number) > int(prev_episode):
+        print(f'New episode is out : {episode_number}')
+    else:
+        print('Waiting for new episode to release')
+        print(f'Current chapter : {prev_episode}')
