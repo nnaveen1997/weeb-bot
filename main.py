@@ -18,11 +18,12 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('!hi'):
+    if message.content.startswith('!weeb hi'):
         await message.channel.send("Kon'nichiwa {0} san!".format(message.author.name))
 
-    if message.content.startswith('!demonslayer'):
-        msg = sc.checkNewEpisode()
+    if message.content.startswith('!weeb status'):
+        anime_name = message.content.split()[-1]
+        msg = sc.checkNewEpisode(anime_name)
         await message.channel.send(msg)
 
 client.run(os.getenv('TOKEN'))

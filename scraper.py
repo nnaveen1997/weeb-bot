@@ -23,8 +23,7 @@ def getKey(anime_name):
         return episode
     return -1
     
-def checkNewEpisode():
-    anime_name = input('Type anime name: ')
+def checkNewEpisode(anime_name):
     latest_ep = scrape(anime_name)
     curr_episode = getKey(anime_name)
 
