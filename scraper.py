@@ -1,38 +1,36 @@
+import db_connection
 from bs4 import BeautifulSoup
 import requests
-import db_connection
 
 db = db_connection
 r = db.getConnection()
 
-html_text = requests.get('https://myanimelist.net/anime/49926/Kimetsu_no_Yaiba__Mugen_Ressha-hen?q=kimetsu&cat=anime').text
-# print(html_text)
+def scrape(anime_name):
+    html_text = requests.get(f'https://ww.gogoanime2.org/anime/{anime_name}').text
 
-soup = BeautifulSoup(html_text, 'lxml')
-# print(soup.prettify())
+    soup = BeautifulSoup(html_text, 'lxml')
+    
+    episodes = soup.find_all('div', class_ = 'name')[-1]
+    latest = episodes.text.split()[-1]
+    return latest
 
-def scrapeEpisode():
-    episode = soup.find('li', class_ = 'btn-anime')
-    # print(episode)
-    episode_number = episode.a['href'].split('/')[-1]
-    # print(episode_number)
-    return episode_number
+def setKey(anime_name, latest_ep):
+    r.set(anime_name, latest_ep)
 
-def setKey(episode_number):
-    r.set('chapter', episode_number)
-
-def getKey():
-    chapter = r.get('chapter')
-    # print(chapter)
-    return chapter
-
+def getKey(anime_name):
+    episode = r.get(anime_name)
+    if episode:
+        return episode
+    return -1
+    
 def checkNewEpisode():
-    episode_number = scrapeEpisode()
-    prev_episode = getKey()
-    if int(episode_number) > int(prev_episode):
-        setKey(episode_number)
-        return f'New episode is out : {episode_number}'
+    anime_name = input('Type anime name: ')
+    latest_ep = scrape(anime_name)
+    curr_episode = getKey(anime_name)
+
+    if int(latest_ep) > int(curr_episode):
+        setKey(anime_name, latest_ep)
+        return f'New episode is out : {latest_ep}'
     else:
-        return f'Waiting for new episode to release\nCurrent Episode : {prev_episode}'
-        
-# print(checkNewEpisode())
+        return f'Waiting for new episode to release\nCurrent Episode : {curr_episode}'
+
