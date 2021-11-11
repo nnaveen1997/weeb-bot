@@ -10,7 +10,12 @@ def scrape(anime_name):
 
     soup = BeautifulSoup(html_text, 'lxml')
     
-    episodes = soup.find_all('div', class_ = 'name')[-1]
+    episodes_container = soup.find_all('div', class_ = 'name')
+    if episodes_container:
+        episodes = episodes_container[-1]
+    else:
+        return -1
+
     latest = episodes.text.split()[-1]
     return latest
 
@@ -25,6 +30,9 @@ def getKey(anime_name):
     
 def checkNewEpisode(anime_name):
     latest_ep = scrape(anime_name)
+    if latest_ep == -1:
+        return f"{anime_name} doesn't exist"
+
     curr_episode = getKey(anime_name)
 
     if int(latest_ep) > int(curr_episode):
@@ -32,4 +40,3 @@ def checkNewEpisode(anime_name):
         return f'New episode is out : {latest_ep}'
     else:
         return f'Waiting for new episode to release\nCurrent Episode : {curr_episode}'
-
