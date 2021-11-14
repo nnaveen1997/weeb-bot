@@ -2,10 +2,12 @@ import discord
 import os
 from dotenv import find_dotenv, load_dotenv
 import scraper
+import scraper_search
 
 load_dotenv(find_dotenv())
 
 sc = scraper
+sc_s = scraper_search
 
 client = discord.Client()
 
@@ -24,6 +26,11 @@ async def on_message(message):
     if message.content.startswith('!weeb status'):
         anime_name = message.content.split()[-1]
         msg = sc.checkNewEpisode(anime_name)
+        await message.channel.send(msg)
+
+    if message.content.startswith('!weeb search'):
+        anime_name = message.content.split()[-1]
+        msg = sc_s.scrapeSearch(anime_name)
         await message.channel.send(msg)
 
 client.run(os.getenv('TOKEN'))
